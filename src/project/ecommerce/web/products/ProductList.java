@@ -1,0 +1,65 @@
+package project.ecommerce.web.products;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.Gson;
+
+import project.ecommerce.dao.ProductDao;
+import project.ecommerce.model.Product;
+
+@WebServlet(name = "ProductList", urlPatterns = "/products")
+public class ProductList extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	private ProductDao productDao;
+
+	public void init() {
+		productDao = new ProductDao();
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		try {
+			listProducts(request, response);
+		} catch (SQLException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void listProducts(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException {
+		// list all products
+		if (request.getParameter("category_id") == null || request.getParameter("category_id") == "") {
+			List<Product> products = new ArrayList<>();
+			products = productDao.selectAllProducts();
+			
+
+			String productsJson = new Gson().toJson(products);
+			response.setContentType("application/json");
+			response.getWriter().print(productsJson);
+		} else {
+			int id = Integer.parseInt(request.getParameter("category_id"));
+			List<Product> products = new ArrayList<>();
+			products = (List<Product>) productDao.selectProduct(id);
+			System.out.println(products);
+			if (products == null) {
+				System.out.println("Nenhum Produto encontrado");
+			}
+			String productsJson = new Gson().toJson(products);
+			response.setContentType("application/json");
+			response.getWriter().print(productsJson);
+		}
+
+	}
+
+}
