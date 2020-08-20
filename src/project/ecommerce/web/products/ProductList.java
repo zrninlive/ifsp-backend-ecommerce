@@ -42,7 +42,6 @@ public class ProductList extends HttpServlet {
 		if (request.getParameter("category_id") == null || request.getParameter("category_id") == "") {
 			List<Product> products = new ArrayList<>();
 			products = productDao.selectAllProducts();
-			
 
 			String productsJson = new Gson().toJson(products);
 			response.setContentType("application/json");
