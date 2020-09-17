@@ -20,7 +20,7 @@ public class Product {
 	}
 	public Product(int id, int category_id, String title,int quantity, String description, double price, String image) {
 		super();
-		this.category_id = id;
+		this.id = id;
 		this.category_id = category_id;
 		this.title = title;
 		this.quantity = quantity;
@@ -28,6 +28,7 @@ public class Product {
 		this.price = price;
 		this.image = image;
 	}
+	public Product() {}
 
 	public int getId() {	return id;	}
 	public void setId(int id) {	this.id = id;	}

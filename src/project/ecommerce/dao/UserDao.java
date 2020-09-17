@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.bson.Document;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
@@ -26,8 +28,8 @@ public class UserDao {
 
 		Document doc = new Document();
 		doc.append("name", user.getName());
-		doc.append("cpf", user.getCpf());
-		doc.append("city", user.getCity());
+		doc.append("email", user.getEmail());
+		doc.append("password", user.getPassword());
 
 		documents.insertOne(doc);
 	}
@@ -44,5 +46,28 @@ public class UserDao {
 			results.add(doc.toJson());
 		}
 		return results.toString();
+	}
+	public String findUserByEmail(String email, String encode_password) {
+		MongoCollection<Document> collection = dtbase.getCollection("users");
+		boolean isFound = false;
+		String userJson = "";
+		
+	    List obj = new ArrayList();
+        obj.add(new BasicDBObject("email", email));
+        obj.add(new BasicDBObject("password", encode_password));
+ 
+        // Form a where query
+        BasicDBObject whereQuery = new BasicDBObject();
+        whereQuery.put("$and", obj);
+	    
+	    FindIterable<org.bson.Document> it = collection.find(whereQuery);
+	     ArrayList<Document> docs = new ArrayList();
+	     
+	       for (org.bson.Document its : it) {
+	           userJson = its.toJson();	    	   
+	           isFound = true;
+	       }        
+	       
+	       return isFound ? userJson : "";
 	}
 }

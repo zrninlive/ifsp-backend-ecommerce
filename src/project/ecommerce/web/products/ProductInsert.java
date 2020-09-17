@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 
 import project.ecommerce.dao.ProductDao;
 import project.ecommerce.model.Product;
@@ -44,21 +45,29 @@ public class ProductInsert extends HttpServlet {
 		String linha = null;
 		
 		BufferedReader reader = request.getReader();
-		System.out.println(reader);
+		
 		while((linha = reader.readLine()) != null) {
 			sb.append(linha);
 		}
-		JsonObject jsonObj = new Gson().fromJson(sb.toString(), JsonObject.class);
-		System.out.println(sb);
+		
+		Product prod = new Product();
+		Gson gson = new Gson();
+		String json = gson.toJson(prod);  
+		
+		System.out.println(json);
+		try {
+			Product jsonObj = new Gson().fromJson(sb.toString(), Product.class);
+		}catch(JsonSyntaxException e)  {
+			e.printStackTrace();
+		}
+		
+		
+		//productDao.insertProduct(produto);
+		//productDao.insertProduct(new Product(category_id, title, quantity, description, price, image));
 		
 		/*
 		 * 
-		 * int category_id = jsonObj.get("category_id").getAsInt();
-		
-		int quantity = jsonObj.get("quatity").getAsInt();
-		String description = jsonObj.get("description").getAsString();
-		Double price = jsonObj.get("price").getAsDouble();
-		String image = jsonObj.get("image").getAsString();
+		 * 
 		
 		int category_id = Integer.parseInt(request.getParameter("category_id"));
 		String title = request.getParameter("title");
@@ -67,7 +76,6 @@ public class ProductInsert extends HttpServlet {
 		Double price = Double.parseDouble(request.getParameter("price"));
 		String image = (String) request.getParameter("image");
 		System.out.println(title);*/
-		//productDao.insertProduct(new Product(category_id, title, quantity, description, price, image));
 	}
 
 }
