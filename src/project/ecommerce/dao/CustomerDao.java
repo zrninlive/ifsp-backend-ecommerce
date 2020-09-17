@@ -11,47 +11,40 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 
-import project.ecommerce.model.User;
+import project.ecommerce.model.Customer;
 import project.ecommerce.utils.MongoUtils;
 
-public class UserDao {
+public class CustomerDao {
 
 	private MongoDatabase dtbase;
 
-	public UserDao() {
+	public CustomerDao() {
 		this.dtbase = new MongoUtils().getDatabase();
 	}
 
-	public void insertUser(User user) {
+	public void insertCustomer(Customer customer) {
 
-		MongoCollection<Document> documents = dtbase.getCollection("users");
+		MongoCollection<Document> documents = dtbase.getCollection("customers");
 
 		Document doc = new Document();
-		doc.append("name", user.getName());
-		doc.append("email", user.getEmail());
-		doc.append("password", user.getPassword());
+		doc.append("name", customer.getName());
+		doc.append("email", customer.getEmail());
+		doc.append("password", customer.getPassword());
+		doc.append("cpf", customer.getCpf());
+		doc.append("phone", customer.getPhone());
+		doc.append("zipcode", customer.getZipcode());
+		doc.append("street", customer.getStreet());
+		doc.append("number", customer.getNumber());
+		doc.append("city", customer.getCity()); 
+		doc.append("state", customer.getState());
 
 		documents.insertOne(doc);
 	}
 
-	public String findUsers() {
-		MongoCollection<Document> collection = dtbase.getCollection("users");
-
-		MongoCursor<Document> cursor = collection.find().iterator();
-
-		List<String> results = new ArrayList<String>();
-
-		while (cursor.hasNext()) {
-			Document doc = cursor.next();
-			results.add(doc.toJson());
-		}
-		return results.toString();
-	}
-	
-	public String findUserByEmail(String email, String encode_password) {
-		MongoCollection<Document> collection = dtbase.getCollection("users");
+	public String findCustomerByEmail(String email, String encode_password) {
+		MongoCollection<Document> collection = dtbase.getCollection("customers");
 		boolean isFound = false;
-		String userJson = "";
+		String CustomerJson = "";
 		
 	    List obj = new ArrayList();
         obj.add(new BasicDBObject("email", email));
@@ -62,13 +55,16 @@ public class UserDao {
         whereQuery.put("$and", obj);
 	    
 	    FindIterable<org.bson.Document> it = collection.find(whereQuery);
-	     ArrayList<Document> docs = new ArrayList();
 	     
 	       for (org.bson.Document its : it) {
-	           userJson = its.toJson();	    	   
+	           CustomerJson = its.toJson();	    	   
 	           isFound = true;
 	       }        
 	       
-	       return isFound ? userJson : "";
+	       return isFound ? CustomerJson : "";
 	}
+
+	public void updateCustomer(Customer customer) {	}
 }
+
+
