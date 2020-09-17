@@ -1,5 +1,6 @@
 package project.ecommerce.web.products;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -8,6 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import project.ecommerce.dao.ProductDao;
 import project.ecommerce.model.Product;
@@ -35,14 +39,35 @@ public class ProductInsert extends HttpServlet {
 	private void insertProducts(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException {
 		
+
+		StringBuffer sb = new StringBuffer();
+		String linha = null;
+		
+		BufferedReader reader = request.getReader();
+		System.out.println(reader);
+		while((linha = reader.readLine()) != null) {
+			sb.append(linha);
+		}
+		JsonObject jsonObj = new Gson().fromJson(sb.toString(), JsonObject.class);
+		System.out.println(sb);
+		
+		/*
+		 * 
+		 * int category_id = jsonObj.get("category_id").getAsInt();
+		
+		int quantity = jsonObj.get("quatity").getAsInt();
+		String description = jsonObj.get("description").getAsString();
+		Double price = jsonObj.get("price").getAsDouble();
+		String image = jsonObj.get("image").getAsString();
+		
 		int category_id = Integer.parseInt(request.getParameter("category_id"));
 		String title = request.getParameter("title");
 		int quantity = Integer.parseInt(request.getParameter("quantity"));
 		String description = request.getParameter("description");
 		Double price = Double.parseDouble(request.getParameter("price"));
 		String image = (String) request.getParameter("image");
-		
-		productDao.insertProduct(new Product(category_id, title, quantity, description, price, image));
+		System.out.println(title);*/
+		//productDao.insertProduct(new Product(category_id, title, quantity, description, price, image));
 	}
 
 }
