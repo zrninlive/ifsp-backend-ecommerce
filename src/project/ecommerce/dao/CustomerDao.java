@@ -3,13 +3,18 @@ package project.ecommerce.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.BSON;
 import org.bson.Document;
+import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.UpdateOptions;
 
 import project.ecommerce.model.Customer;
 import project.ecommerce.utils.MongoUtils;
@@ -64,7 +69,31 @@ public class CustomerDao {
 	       return isFound ? CustomerJson : "";
 	}
 
-	public void updateCustomer(Customer customer) {	}
+	public void updateCustomer(Customer customer) {
+		
+		MongoCollection<Document> collection = dtbase.getCollection("customers");
+		
+		Bson filter = new BasicDBObject("email", customer.getEmail());
+		
+		Document found = (Document) collection.find(filter).first();
+		
+		if(found != null) {
+			
+			BasicDBObject newDocument = new BasicDBObject();
+				newDocument.put("name", customer.getName());
+				newDocument.put("email", customer.getEmail());
+				newDocument.put("password", customer.getPassword());
+				newDocument.put("cpf", customer.getCpf());
+				newDocument.put("phone", customer.getPhone());
+				newDocument.put("zipcode", customer.getZipcode());
+				newDocument.put("street", customer.getStreet());
+				newDocument.put("number", customer.getNumber());
+				newDocument.put("city", customer.getCity());
+				newDocument.put("state", customer.getState());
+
+			collection.updateOne(filter, new Document("$set", newDocument));	
+		}
+	}
 }
 
 
