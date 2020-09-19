@@ -72,7 +72,7 @@ public class CustomerDao {
 	       return isFound ? customerJson : "";
 	}
 
-	public String findCustomer(String cpf) {
+	public String findCustomer(String cpf) throws Exception {
 		MongoCollection<Document> collection = dtbase.getCollection("customers");
 		boolean isFound = false;
 		String customerJson = "";
@@ -87,6 +87,9 @@ public class CustomerDao {
 	    	   customerJson = its.toJson();	    	   
 	           isFound = true;
 	       }        
+	       	if(!isFound) {
+	       		throw new Exception("CUSTOMER NOT FOUND");
+	       	}
 
 	       return isFound ? customerJson : "";
 	}

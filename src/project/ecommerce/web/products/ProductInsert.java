@@ -38,8 +38,7 @@ public class ProductInsert extends HttpServlet {
 	}
 
 	private void insertProducts(HttpServletRequest request, HttpServletResponse response)
-			throws SQLException, IOException {
-		
+			throws SQLException, IOException {		
 
 		StringBuffer sb = new StringBuffer();
 		String linha = null;

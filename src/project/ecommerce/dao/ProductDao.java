@@ -13,20 +13,20 @@ import project.ecommerce.utils.JDBCUtils;
 public class ProductDao {
 
 	// define sql statments
-	private static final String INSERT_PRODUCTS_SQL = "INSERT INTO products" 
-	+ "(category_id, title, quantity, description, price, image) VALUES"
-			+ "(?, ?, ?, ?, ? , ?);";
+	private static final String INSERT_PRODUCTS_SQL = "INSERT INTO products"
+			+ "(category_id, title, quantity, description, price, image) VALUES" + "(?, ?, ?, ?, ? , ?);";
 
 	private static final String SELECT_PRODUCT_BY_CATEGORY = "SELECT * from products WHERE category_id = ?;";
+
+	private static final String SELECT_PRODUCT_BY_ID = "SELECT * from products WHERE id = ?;";
 
 	private static final String SELECT_ALL_PRODUCTS = "Select * from products;";
 
 	private static final String DELETE_PRODUCT = "DELETE from products where id = ? ;";
 
-	private static final String UPDATE_PRODUCT = 
-			"UPDATE products set title=?, quantity=?, description=?, price=?, image=? WHERE id=?;" ;
+	private static final String UPDATE_PRODUCT = "UPDATE products set title=?, quantity=?, description=?, price=?, image=? WHERE id=?;";
 	
-	
+	private static final String UPDATE_PRODUCT_STOCK = "UPDATE products set quantity=? WHERE id=?;";
 
 	public List<Product> selectAllProducts() {
 		List<Product> products = new ArrayList<>();
@@ -65,12 +65,37 @@ public class ProductDao {
 				String description = result.getString("description");
 				double price = result.getDouble("price");
 				String image = result.getString("image");
-				products.add(new Product(id,category_id, title,quantity,description,price,image));
+				products.add(new Product(id, category_id, title, quantity, description, price, image));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return products;
+	}
+
+	public Product selectProductById(int id) {
+
+		Product product = new Product();
+
+		try (Connection connection = JDBCUtils.getConnection();
+				PreparedStatement ps = connection.prepareStatement(SELECT_PRODUCT_BY_ID)) {
+			ps.setInt(1, id);
+			ResultSet result = ps.executeQuery();
+
+			while (result.next()) {
+				product.setId(result.getInt("id"));
+				product.setCategory_id(result.getInt("category_id"));
+				product.setTitle(result.getString("title"));
+				product.setQuantity(result.getInt("quantity"));
+				product.setDescription(result.getString("description"));
+				product.setPrice(result.getDouble("price"));
+				product.setImage(result.getString("image"));
+			
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return product;
 	}
 
 	public void insertProduct(Product product) throws SQLException {
@@ -92,7 +117,7 @@ public class ProductDao {
 
 	public boolean updateProduct(Product product) throws SQLException {
 		boolean productUpdated = false;
-		
+
 		try (Connection connection = JDBCUtils.getConnection();
 				PreparedStatement ps = connection.prepareStatement(UPDATE_PRODUCT)) {
 			ps.setString(1, product.getTitle());
@@ -100,8 +125,23 @@ public class ProductDao {
 			ps.setString(3, product.getDescription());
 			ps.setDouble(4, product.getPrice());
 			ps.setString(5, product.getImage());
-			ps.setInt(6, product.getId());			
-			
+			ps.setInt(6, product.getId());
+
+			productUpdated = ps.executeUpdate() > 0;
+		}
+		return productUpdated;
+	}
+	
+	public boolean updateProductStock(int id, int quantity_order) throws SQLException {
+		boolean productUpdated = false;
+		
+		Product product = this.selectProductById(id);
+		
+		try (Connection connection = JDBCUtils.getConnection();
+				PreparedStatement ps = connection.prepareStatement(UPDATE_PRODUCT_STOCK)) {
+			ps.setInt(1, (product.getQuantity()-quantity_order));
+			ps.setInt(2, id);
+
 			productUpdated = ps.executeUpdate() > 0;
 		}
 		return productUpdated;
@@ -117,4 +157,6 @@ public class ProductDao {
 		}
 		return productDeleted;
 	}
+
+	
 }

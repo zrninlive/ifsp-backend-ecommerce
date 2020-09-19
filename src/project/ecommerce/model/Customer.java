@@ -1,7 +1,7 @@
 package project.ecommerce.model;
 
 public class Customer {	
-	private int _id;
+	private Object _id;
 	private String name;
 	private String email;
 	private String password;
@@ -13,7 +13,7 @@ public class Customer {
 	private String city;
 	private String state;
 	
-	public Customer(int _id, String name, String email, String password, 
+	public Customer(Object _id, String name, String email, String password, 
 			String cpf, String phone, String zipcode, String street, String number, String city, String state) {
 		super();
 		this._id = _id;
@@ -46,10 +46,10 @@ public class Customer {
 	
 	public Customer() {}
 	
-	public int get_id() {
+	public Object get_id() {
 		return _id;
 	}
-	public void set_id(int _id) {
+	public void set_id(Object _id) {
 		this._id = _id;
 	}
 	public String getName() {

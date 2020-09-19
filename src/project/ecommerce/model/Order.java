@@ -5,24 +5,30 @@ import java.util.List;
 
 public class Order {
 
-	Product products = new Product();
-	User customer;
+	List<Product> products = new ArrayList<Product>();
+	Customer customer;
 	double total;
-	
-	public Order(List<Product> products, User customer, double total) {
+
+	public Order() {
+	}
+
+	public Order(List<Product> products, Customer customer, double total) {
 		super();
-		this.products = (Product) products;
+		this.products = products;
 		this.customer = customer;
 		this.total = total;
 	}
 
-	public List<Product> getProducts() { return (List<Product>) products;	}
-	public void setProducts(List<Product> products) {	this.products = (Product) products;	}
+	public void setProducts(List<Product> products) {
+		this.products = (List<Product>) products;
+	}
 
-	public User getCustomer() {	return customer; }
-	public void setCustomer(User customer) {this.customer = customer;}
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
 
-	public double getTotal() {	return total;	}
-	public void setTotal(double total) { this.total = total;	}
-	
+	public void setTotal(double total) {
+		this.total = total;
+	}
+
 }

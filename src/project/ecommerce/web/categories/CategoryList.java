@@ -44,13 +44,8 @@ public class CategoryList extends HttpServlet {
 
 		String categoriesJson = new Gson().toJson(categories);
 
-		if (!categories.isEmpty()) {
-
-			response.setContentType("application/json");
-			response.getWriter().print(categoriesJson);
-		} else {
-			System.out.println("Array Vazio");
-		}
+		response.setHeader("Content-Type", "application/json; charset=UTF-8");	
+		response.getWriter().print(categoriesJson);
 
 	}
 

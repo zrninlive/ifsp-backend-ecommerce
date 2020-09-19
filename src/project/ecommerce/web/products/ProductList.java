@@ -39,25 +39,24 @@ public class ProductList extends HttpServlet {
 	private void listProducts(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException {
 		// list all products
+		List<Product> products = new ArrayList<>();
+
 		if (request.getParameter("category_id") == null || request.getParameter("category_id") == "") {
-			List<Product> products = new ArrayList<>();
 			products = productDao.selectAllProducts();
 
-			String productsJson = new Gson().toJson(products);
-			response.setContentType("application/json");
-			response.getWriter().print(productsJson);
 		} else {
 			int id = Integer.parseInt(request.getParameter("category_id"));
-			List<Product> products = new ArrayList<>();
+			
 			products = (List<Product>) productDao.selectProduct(id);
-			System.out.println(products);
+			
 			if (products == null) {
 				System.out.println("Nenhum Produto encontrado");
 			}
-			String productsJson = new Gson().toJson(products);
-			response.setContentType("application/json");
-			response.getWriter().print(productsJson);
+			
 		}
+		String productsJson = new Gson().toJson(products);	
+		response.setHeader("Content-Type", "application/json; charset=UTF-8");			
+		response.getWriter().print(productsJson);
 
 	}
 }

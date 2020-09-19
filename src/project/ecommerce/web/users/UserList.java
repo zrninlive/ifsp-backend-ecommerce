@@ -33,7 +33,7 @@ public class UserList extends HttpServlet {
 
 		String users = userDao.findUsers();
 
-		response.setContentType("application/json");
+		response.setHeader("Content-Type", "application/json; charset=UTF-8");	
 		response.getWriter().print(users);
 
 	}
