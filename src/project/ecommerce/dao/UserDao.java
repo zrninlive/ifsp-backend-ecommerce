@@ -1,6 +1,7 @@
 package project.ecommerce.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.bson.Document;
@@ -45,6 +46,7 @@ public class UserDao {
 			Document doc = cursor.next();
 			results.add(doc.toJson());
 		}
+
 		return results.toString();
 	}
 	
@@ -68,7 +70,7 @@ public class UserDao {
 	           userJson = its.toJson();	    	   
 	           isFound = true;
 	       }        
-	       
+
 	       return isFound ? userJson : "";
 	}
 }

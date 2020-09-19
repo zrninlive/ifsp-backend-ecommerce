@@ -1,6 +1,7 @@
 package project.ecommerce.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.bson.BSON;
@@ -9,6 +10,8 @@ import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -49,7 +52,7 @@ public class CustomerDao {
 	public String findCustomerByEmail(String email, String encode_password) {
 		MongoCollection<Document> collection = dtbase.getCollection("customers");
 		boolean isFound = false;
-		String CustomerJson = "";
+		String customerJson = "";
 		
 	    List obj = new ArrayList();
         obj.add(new BasicDBObject("email", email));
@@ -62,13 +65,32 @@ public class CustomerDao {
 	    FindIterable<org.bson.Document> it = collection.find(whereQuery);
 	     
 	       for (org.bson.Document its : it) {
-	           CustomerJson = its.toJson();	    	   
+	    	   customerJson = its.toJson();	    	   
 	           isFound = true;
 	       }        
-	       
-	       return isFound ? CustomerJson : "";
+
+	       return isFound ? customerJson : "";
 	}
 
+	public String findCustomer(String cpf) {
+		MongoCollection<Document> collection = dtbase.getCollection("customers");
+		boolean isFound = false;
+		String customerJson = "";
+		
+        // Form a where query
+        BasicDBObject whereQuery = new BasicDBObject();
+        whereQuery.put("cpf", cpf);
+	    
+	    FindIterable<org.bson.Document> it = collection.find(whereQuery);
+	     
+	       for (org.bson.Document its : it) {
+	    	   customerJson = its.toJson();	    	   
+	           isFound = true;
+	       }        
+
+	       return isFound ? customerJson : "";
+	}
+	
 	public void updateCustomer(Customer customer) {
 		
 		MongoCollection<Document> collection = dtbase.getCollection("customers");

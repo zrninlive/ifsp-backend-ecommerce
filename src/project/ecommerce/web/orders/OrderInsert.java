@@ -17,13 +17,9 @@ import project.ecommerce.dao.UserDao;
 public class OrderInsert extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    private UserDao userDao;
-    private ProductDao productDao;
     private OrderDao orderDao;
     
     public void init() {
-    	userDao = new UserDao();
-    	productDao = new ProductDao();
     	orderDao = new OrderDao();
     }
 
@@ -31,7 +27,7 @@ public class OrderInsert extends HttpServlet {
     	throws IOException , ServletException{
     	
     	try {
-    		insertOrders(request, response)
+    		insertOrders(request, response);
     	}catch(IOException e) {
     		e.printStackTrace();
     	}
@@ -40,9 +36,6 @@ public class OrderInsert extends HttpServlet {
     private void insertOrders(HttpServletRequest request, HttpServletResponse response)
     	throws ServletException, IOException{
     	
-    	String produto = request.getParameter("product");
-    	String 
-
-    	orderDao.createOrder(new Order());
+    	
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bson.Document;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
@@ -22,22 +23,15 @@ public class OrderDao {
 		this.dtbase = new MongoUtils().getDatabase();
 	}
 	
-	public void create(Order order, User user, Product product) {
-		
-		MongoCollection<Document> documents = dtbase.getCollection("orders");
-		
-		Document doc = new Document();
-		doc.append("customer_id", user.get_id());
-		doc.append("product_name", product.getTitle());
-		doc.append("total", order.getTotal());
-		
-		documents.insertOne(doc);
-	}
 	
-	public String find() {
+	
+	public String findOrdersByCpf(String cpf) {
 		MongoCollection<Document> collection = dtbase.getCollection("orders");
 		
-		MongoCursor<Document> cursor = collection.find().iterator();
+		BasicDBObject whereQuery = new BasicDBObject();
+	    whereQuery.put("customer.cpf", cpf);
+		
+		MongoCursor<Document> cursor = collection.find(whereQuery).iterator();
 		
 		List<String> results = new ArrayList<String>();
 		

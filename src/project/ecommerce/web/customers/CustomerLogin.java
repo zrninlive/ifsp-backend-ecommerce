@@ -29,6 +29,7 @@ public class CustomerLogin extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
+	
 	private void login(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("application/json");
