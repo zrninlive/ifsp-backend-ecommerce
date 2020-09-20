@@ -112,8 +112,10 @@ public class OrderInsert extends HttpServlet {
 
 			orderDao.insertOrder(docProducts, docCustomer, total);
 
+			
+			
 			String orderJson = gson.toJson(order);
-			response.getWriter().write(orderJson);
+			response.getWriter().print(orderJson);
 
 		} catch (Exception e) {
 			response.setStatus(400);

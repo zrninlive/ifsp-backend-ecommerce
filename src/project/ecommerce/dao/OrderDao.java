@@ -1,23 +1,16 @@
 package project.ecommerce.dao;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.Document;
-import org.bson.types.ObjectId;
 
-import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
-import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.util.JSON;
 
-import project.ecommerce.model.Customer;
-import project.ecommerce.model.Order;
-import project.ecommerce.model.Product;
-import project.ecommerce.model.User;
 import project.ecommerce.utils.MongoUtils;
 
 public class OrderDao {
@@ -54,9 +47,10 @@ public class OrderDao {
 		document.append("products", products);
 		document.append("customer", customer);
 		document.append("total", total);
+		document.append("created_at", LocalDateTime.now().toString());
 
-		System.out.println(document);
-
+		System.out.println(LocalDateTime.now().toString());
+		
 		documents.insertOne(document);
 
 	}
