@@ -25,7 +25,7 @@ public class ProductDao {
 	private static final String DELETE_PRODUCT = "DELETE from products where id = ? ;";
 
 	private static final String UPDATE_PRODUCT = "UPDATE products set title=?, quantity=?, description=?, price=?, image=? WHERE id=?;";
-	
+
 	private static final String UPDATE_PRODUCT_STOCK = "UPDATE products set quantity=? WHERE id=?;";
 
 	public List<Product> selectAllProducts() {
@@ -90,7 +90,7 @@ public class ProductDao {
 				product.setDescription(result.getString("description"));
 				product.setPrice(result.getDouble("price"));
 				product.setImage(result.getString("image"));
-			
+
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -131,15 +131,15 @@ public class ProductDao {
 		}
 		return productUpdated;
 	}
-	
+
 	public boolean updateProductStock(int id, int quantity_order) throws SQLException {
 		boolean productUpdated = false;
-		
+
 		Product product = this.selectProductById(id);
-		
+
 		try (Connection connection = JDBCUtils.getConnection();
 				PreparedStatement ps = connection.prepareStatement(UPDATE_PRODUCT_STOCK)) {
-			ps.setInt(1, (product.getQuantity()-quantity_order));
+			ps.setInt(1, (product.getQuantity() - quantity_order));
 			ps.setInt(2, id);
 
 			productUpdated = ps.executeUpdate() > 0;
@@ -158,5 +158,4 @@ public class ProductDao {
 		return productDeleted;
 	}
 
-	
 }

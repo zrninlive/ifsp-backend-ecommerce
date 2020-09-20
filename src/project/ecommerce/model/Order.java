@@ -19,6 +19,18 @@ public class Order {
 		this.total = total;
 	}
 
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public double getTotal() {
+		return total;
+	}
+
 	public void setProducts(List<Product> products) {
 		this.products = (List<Product>) products;
 	}

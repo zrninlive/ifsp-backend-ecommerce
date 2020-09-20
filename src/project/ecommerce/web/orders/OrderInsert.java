@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.bson.Document;
+
 import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 
@@ -55,8 +57,6 @@ public class OrderInsert extends HttpServlet {
 
 			Customer customer = gson.fromJson(customer_json, Customer.class);
 
-			System.out.println(customer);
-
 			for (int i = 0; i < total_products; i++) {
 				int product_id = Integer.parseInt(request.getParameter("products[" + i + "][id]"));
 				int order_quantity = Integer.parseInt(request.getParameter("products[" + i + "][quantity]"));
@@ -79,14 +79,41 @@ public class OrderInsert extends HttpServlet {
 
 			}
 
+			List<Document> docProducts = new ArrayList<>();
+
 			for (Product element : orderProducts) {
 				productDao.updateProductStock(element.getId(), element.getQuantity());
+
+				Document docProduct = new Document();
+				docProduct.append("id", element.getId());
+				docProduct.append("title", element.getTitle());
+				docProduct.append("quantity", element.getQuantity());
+				docProduct.append("price", element.getPrice());
+				docProduct.append("image", element.getImage());
+				docProduct.append("total", (element.getQuantity() * element.getPrice()));
+
+				docProducts.add(docProduct);
 			}
 
-			order = new Order(orderProducts, customer, total);
+			Document docCustomer = new Document();
+			docCustomer.append("name", customer.getName());
+			docCustomer.append("cpf", customer.getCpf());
+			docCustomer.append("email", customer.getEmail());
+			docCustomer.append("phone", customer.getPhone());
+
+			Document docCustomerAddress = new Document();
+			docCustomerAddress.append("zipcode", customer.getZipcode());
+			docCustomerAddress.append("street", customer.getStreet());
+			docCustomerAddress.append("number", customer.getNumber());
+			docCustomerAddress.append("city", customer.getCity());
+			docCustomerAddress.append("state", customer.getState());
+
+			docCustomer.append("address", docCustomerAddress);
+
+			orderDao.insertOrder(docProducts, docCustomer, total);
 
 			String orderJson = gson.toJson(order);
-			response.getWriter().print(orderJson);
+			response.getWriter().write(orderJson);
 
 		} catch (Exception e) {
 			response.setStatus(400);
