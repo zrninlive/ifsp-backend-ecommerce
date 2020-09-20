@@ -1,9 +1,7 @@
 package project.ecommerce.web.orders;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -15,12 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.bson.Document;
 
 import com.google.gson.Gson;
-import com.mongodb.BasicDBObject;
 
 import project.ecommerce.dao.CustomerDao;
 import project.ecommerce.dao.OrderDao;
 import project.ecommerce.dao.ProductDao;
-import project.ecommerce.dao.UserDao;
 import project.ecommerce.model.Customer;
 import project.ecommerce.model.Order;
 import project.ecommerce.model.Product;
@@ -42,7 +38,9 @@ public class OrderInsert extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		response.setHeader("Content-Type", "application/json; charset=UTF-8");
+
 		Gson gson = new Gson();
 		Order order = new Order();
 
@@ -112,8 +110,6 @@ public class OrderInsert extends HttpServlet {
 
 			orderDao.insertOrder(docProducts, docCustomer, total);
 
-			
-			
 			String orderJson = gson.toJson(order);
 			response.getWriter().print(orderJson);
 

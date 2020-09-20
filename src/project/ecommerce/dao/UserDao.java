@@ -1,7 +1,6 @@
 package project.ecommerce.dao;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.bson.Document;
@@ -49,28 +48,27 @@ public class UserDao {
 
 		return results.toString();
 	}
-	
+
 	public String findUserByEmail(String email, String encode_password) {
 		MongoCollection<Document> collection = dtbase.getCollection("users");
 		boolean isFound = false;
 		String userJson = "";
-		
-	    List obj = new ArrayList();
-        obj.add(new BasicDBObject("email", email));
-        obj.add(new BasicDBObject("password", encode_password));
- 
-        // Form a where query
-        BasicDBObject whereQuery = new BasicDBObject();
-        whereQuery.put("$and", obj);
-	    
-	    FindIterable<org.bson.Document> it = collection.find(whereQuery);
-	     ArrayList<Document> docs = new ArrayList();
-	     
-	       for (org.bson.Document its : it) {
-	           userJson = its.toJson();	    	   
-	           isFound = true;
-	       }        
 
-	       return isFound ? userJson : "";
+		List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
+		obj.add(new BasicDBObject("email", email));
+		obj.add(new BasicDBObject("password", encode_password));
+
+		// Form a where query
+		BasicDBObject whereQuery = new BasicDBObject();
+		whereQuery.put("$and", obj);
+
+		FindIterable<org.bson.Document> it = collection.find(whereQuery);
+
+		for (org.bson.Document its : it) {
+			userJson = its.toJson();
+			isFound = true;
+		}
+
+		return isFound ? userJson : "";
 	}
 }

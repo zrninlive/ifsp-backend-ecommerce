@@ -14,7 +14,7 @@ public class ProductDao {
 
 	// define sql statments
 	private static final String INSERT_PRODUCTS_SQL = "INSERT INTO products"
-			+ "(category_id, title, quantity, description, price, image) VALUES" + "(?, ?, ?, ?, ? , ?);";
+			+ "(category_id, title, quantity, description, highlight, price, image) VALUES" + "(?, ?, ?, ?, ? , ?);";
 
 	private static final String SELECT_PRODUCT_BY_CATEGORY = "SELECT * from products WHERE category_id = ?;";
 
@@ -24,7 +24,7 @@ public class ProductDao {
 
 	private static final String DELETE_PRODUCT = "DELETE from products where id = ? ;";
 
-	private static final String UPDATE_PRODUCT = "UPDATE products set title=?, quantity=?, description=?, price=?, image=? WHERE id=?;";
+	private static final String UPDATE_PRODUCT = "UPDATE products set title=?, quantity=?, description=?, highlight=? ,price=?, image=? WHERE id=?;";
 
 	private static final String UPDATE_PRODUCT_STOCK = "UPDATE products set quantity=? WHERE id=?;";
 
@@ -41,9 +41,10 @@ public class ProductDao {
 				String title = result.getString("title");
 				int quantity = result.getInt("quantity");
 				String description = result.getString("description");
+				boolean highlight = result.getBoolean("highlight");
 				double price = result.getDouble("price");
 				String image = result.getString("image");
-				products.add(new Product(id, category_id, title, quantity, description, price, image));
+				products.add(new Product(id, category_id, title, quantity, description, highlight, price, image));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -63,9 +64,10 @@ public class ProductDao {
 				String title = result.getString("title");
 				int quantity = result.getInt("quantity");
 				String description = result.getString("description");
+				boolean highlight = result.getBoolean("highlight");
 				double price = result.getDouble("price");
 				String image = result.getString("image");
-				products.add(new Product(id, category_id, title, quantity, description, price, image));
+				products.add(new Product(id, category_id, title, quantity, description, highlight, price, image));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -88,6 +90,7 @@ public class ProductDao {
 				product.setTitle(result.getString("title"));
 				product.setQuantity(result.getInt("quantity"));
 				product.setDescription(result.getString("description"));
+				product.setHighlight(result.getBoolean("highlight"));
 				product.setPrice(result.getDouble("price"));
 				product.setImage(result.getString("image"));
 
@@ -106,8 +109,9 @@ public class ProductDao {
 			ps.setString(2, product.getTitle());
 			ps.setInt(3, product.getQuantity());
 			ps.setString(4, product.getDescription());
-			ps.setDouble(5, product.getPrice());
-			ps.setString(6, product.getImage());
+			ps.setBoolean(5, product.getHighlight());
+			ps.setDouble(6, product.getPrice());
+			ps.setString(7, product.getImage());
 			ps.executeUpdate();
 
 		} catch (SQLException e) {
@@ -123,9 +127,10 @@ public class ProductDao {
 			ps.setString(1, product.getTitle());
 			ps.setInt(2, product.getQuantity());
 			ps.setString(3, product.getDescription());
-			ps.setDouble(4, product.getPrice());
-			ps.setString(5, product.getImage());
-			ps.setInt(6, product.getId());
+			ps.setBoolean(4, product.getHighlight());
+			ps.setDouble(5, product.getPrice());
+			ps.setString(6, product.getImage());
+			ps.setInt(7, product.getId());
 
 			productUpdated = ps.executeUpdate() > 0;
 		}

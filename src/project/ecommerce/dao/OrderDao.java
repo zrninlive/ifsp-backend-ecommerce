@@ -50,7 +50,7 @@ public class OrderDao {
 		document.append("created_at", LocalDateTime.now().toString());
 
 		System.out.println(LocalDateTime.now().toString());
-		
+
 		documents.insertOne(document);
 
 	}

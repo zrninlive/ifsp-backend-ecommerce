@@ -39,9 +39,10 @@ public class ProductUpdate extends HttpServlet {
 		String title = request.getParameter("title");
 		int quantity = Integer.parseInt(request.getParameter("quantity"));
 		String description = request.getParameter("description");
+		boolean highlight = Boolean.parseBoolean(request.getParameter("highlight"));
 		Double price = Double.parseDouble(request.getParameter("price"));
 		String image = (String) request.getParameter("image");
 
-		productDao.updateProduct(new Product(id, title, quantity, description, price, image));
+		productDao.updateProduct(new Product(id, title, quantity, description, highlight, price, image));
 	}
 }

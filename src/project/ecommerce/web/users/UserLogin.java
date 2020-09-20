@@ -9,11 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gson.Gson;
-
 import project.ecommerce.dao.UserDao;
-
-
 
 @WebServlet(name = "/UserLogin", urlPatterns = "/users/login")
 public class UserLogin extends HttpServlet {
@@ -23,30 +19,31 @@ public class UserLogin extends HttpServlet {
 	public void init() {
 		userDao = new UserDao();
 	}
-	
-	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	protected void service(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		try {
 			login(request, response);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	private void login(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+
+	private void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		
+
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		
+
 		String encode_password = Base64.getEncoder().encodeToString(password.getBytes());
-		
+
 		String user = userDao.findUserByEmail(email, encode_password);
-		
-		if(user.isEmpty()) {
-			response.setStatus(401);			
+
+		if (user.isEmpty()) {
+			response.setStatus(401);
 		}
-		
+
 		response.getWriter().print(user);
 	}
 }

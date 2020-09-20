@@ -18,6 +18,7 @@ import project.ecommerce.model.Product;
 
 @WebServlet(name = "ProductList", urlPatterns = "/products")
 public class ProductList extends HttpServlet {
+
 	private static final long serialVersionUID = 1L;
 
 	private ProductDao productDao;
@@ -46,16 +47,18 @@ public class ProductList extends HttpServlet {
 
 		} else {
 			int id = Integer.parseInt(request.getParameter("category_id"));
-			
+
 			products = (List<Product>) productDao.selectProduct(id);
-			
+
 			if (products == null) {
 				System.out.println("Nenhum Produto encontrado");
 			}
-			
+
 		}
-		String productsJson = new Gson().toJson(products);	
-		response.setHeader("Content-Type", "application/json; charset=UTF-8");			
+		String productsJson = new Gson().toJson(products);
+		
+		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Content-Type", "application/json; charset=UTF-8");
 		response.getWriter().print(productsJson);
 
 	}

@@ -25,17 +25,18 @@ public class CustomerUpdate extends HttpServlet {
 
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		try {
 			updateCustomer(request, response);
 		} catch (SQLException | IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	private void updateCustomer(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException {
+
+		response.addHeader("Access-Control-Allow-Origin", "*");
+
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");

@@ -44,6 +44,7 @@ public class CategoryList extends HttpServlet {
 
 		String categoriesJson = new Gson().toJson(categories);
 
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		response.setHeader("Content-Type", "application/json; charset=UTF-8");	
 		response.getWriter().print(categoriesJson);
 

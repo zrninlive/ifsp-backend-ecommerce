@@ -33,8 +33,8 @@ public class CategoryInsert extends HttpServlet {
 	}
 
 	private void insertCategory(HttpServletRequest request, HttpServletResponse response)
-			throws SQLException, IOException {		
-		
+			throws SQLException, IOException {
+
 		String name = request.getParameter("name");
 		categoryDao.insertCategory(new Category(name));
 	}
