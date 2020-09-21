@@ -35,10 +35,10 @@ public class OrderInsert extends HttpServlet {
 		customerDao = new CustomerDao();
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 
-		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.setHeader("Content-Type", "application/json; charset=UTF-8");
 
 		Gson gson = new Gson();

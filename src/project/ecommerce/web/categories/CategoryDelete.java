@@ -23,19 +23,14 @@ public class CategoryDelete extends HttpServlet {
 
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		response.setHeader("Access-Control-Allow-Origin", "*");
 
 		try {
-			deleteCategory(request, response);
-		} catch (SQLException | IOException e) {
+			int id = Integer.parseInt(request.getParameter("id"));
+			categoryDao.deleteCategory(id);
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-
-	private void deleteCategory(HttpServletRequest request, HttpServletResponse response)
-			throws SQLException, IOException {
-		System.out.println("delete");
-		int id = Integer.parseInt(request.getParameter("id"));
-		categoryDao.deleteCategory(id);
 	}
 
 }

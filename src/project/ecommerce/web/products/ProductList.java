@@ -1,7 +1,6 @@
 package project.ecommerce.web.products;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,37 +28,33 @@ public class ProductList extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		
 		try {
-			listProducts(request, response);
-		} catch (SQLException | IOException e) {
+			// list all products
+			List<Product> products = new ArrayList<>();
+
+			if (request.getParameter("category_id") == null || request.getParameter("category_id") == "") {
+				products = productDao.selectAllProducts();
+
+			} else {
+				int id = Integer.parseInt(request.getParameter("category_id"));
+
+				products = (List<Product>) productDao.selectProduct(id);
+
+				if (products == null) {
+					System.out.println("Nenhum Produto encontrado");
+				}
+
+			}
+			String productsJson = new Gson().toJson(products);
+
+			response.setHeader("Content-Type", "application/json; charset=UTF-8");
+			response.getWriter().print(productsJson);
+			
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void listProducts(HttpServletRequest request, HttpServletResponse response)
-			throws SQLException, IOException {
-		// list all products
-		List<Product> products = new ArrayList<>();
-
-		if (request.getParameter("category_id") == null || request.getParameter("category_id") == "") {
-			products = productDao.selectAllProducts();
-
-		} else {
-			int id = Integer.parseInt(request.getParameter("category_id"));
-
-			products = (List<Product>) productDao.selectProduct(id);
-
-			if (products == null) {
-				System.out.println("Nenhum Produto encontrado");
-			}
-
-		}
-		String productsJson = new Gson().toJson(products);
-		
-		response.addHeader("Access-Control-Allow-Origin", "*");
-		response.setHeader("Content-Type", "application/json; charset=UTF-8");
-		response.getWriter().print(productsJson);
-
-	}
 }

@@ -24,22 +24,18 @@ public class CategoryUpdate extends HttpServlet {
 
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		response.setHeader("Access-Control-Allow-Origin", "*");
 
 		try {
-			updateCategory(request, response);
-		} catch (SQLException | IOException e) {
+			int id = Integer.parseInt(request.getParameter("id"));
+			String name = request.getParameter("name");
+
+			categoryDao.updateCategory(new Category(id, name));
+			
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-	}
-
-	private void updateCategory(HttpServletRequest request, HttpServletResponse response)
-			throws SQLException, IOException {
-		
-		int id = Integer.parseInt(request.getParameter("id"));
-		String name = request.getParameter("name");
-
-		categoryDao.updateCategory(new Category(id, name));
 	}
 
 }

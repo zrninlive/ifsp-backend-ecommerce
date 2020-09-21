@@ -25,28 +25,21 @@ public class CategoryList extends HttpServlet {
 		categoryDao = new CategoryDao();
 	}
 
-	protected void service(HttpServletRequest request, HttpServletResponse response)
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Content-Type", "application/json; charset=UTF-8");	
 
 		try {
-			listCategory(request, response);
+			List<Category> categories = new ArrayList<>();
+			categories = categoryDao.selectAllCategories();
+
+			String categoriesJson = new Gson().toJson(categories);
+
+			response.getWriter().print(categoriesJson);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-	}
-
-	private void listCategory(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
-		List<Category> categories = new ArrayList<>();
-		categories = categoryDao.selectAllCategories();
-
-		String categoriesJson = new Gson().toJson(categories);
-
-		response.addHeader("Access-Control-Allow-Origin", "*");
-		response.setHeader("Content-Type", "application/json; charset=UTF-8");	
-		response.getWriter().print(categoriesJson);
 
 	}
 

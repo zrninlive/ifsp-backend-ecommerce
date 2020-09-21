@@ -1,6 +1,5 @@
 package project.ecommerce.web.orders;
 
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,9 +21,10 @@ public class OrderList extends HttpServlet {
 		customerDao = new CustomerDao();
 	}
 
-	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 
-		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Content-Type", "application/json; charset=UTF-8");
 
 		try {
 			String cpf = request.getParameter("cpf");
@@ -33,7 +33,6 @@ public class OrderList extends HttpServlet {
 			if (customer != "") {
 				String orders = orderDao.findOrdersByCpf(cpf);
 
-				response.setHeader("Content-Type", "application/json; charset=UTF-8");
 				response.getWriter().print(orders);
 
 			} else {

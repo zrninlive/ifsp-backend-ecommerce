@@ -22,28 +22,26 @@ public class UserLogin extends HttpServlet {
 
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+
 		try {
-			login(request, response);
+			String email = request.getParameter("email");
+			String password = request.getParameter("password");
+
+			String encode_password = Base64.getEncoder().encodeToString(password.getBytes());
+
+			String user = userDao.findUserByEmail(email, encode_password);
+
+			if (user.isEmpty()) {
+				response.setStatus(401);
+			}
+
+			response.getWriter().print(user);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-
-		String email = request.getParameter("email");
-		String password = request.getParameter("password");
-
-		String encode_password = Base64.getEncoder().encodeToString(password.getBytes());
-
-		String user = userDao.findUserByEmail(email, encode_password);
-
-		if (user.isEmpty()) {
-			response.setStatus(401);
-		}
-
-		response.getWriter().print(user);
-	}
 }

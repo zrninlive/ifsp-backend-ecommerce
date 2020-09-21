@@ -22,19 +22,9 @@ public class CustomerInsert extends HttpServlet {
 		customerDao = new CustomerDao();
 	}
 
-	protected void doPo(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setHeader("Access-Control-Allow-Origin", "*");
 
-		try {
-			insertCustomers(request, response);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void insertCustomers(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		response.addHeader("Access-Control-Allow-Origin", "*");
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
@@ -52,4 +42,5 @@ public class CustomerInsert extends HttpServlet {
 		customerDao.insertCustomer(
 				new Customer(name, email, encode_password, cpf, phone, zipcode, street, number, city, state));
 	}
+
 }

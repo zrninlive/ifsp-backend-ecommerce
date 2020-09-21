@@ -22,28 +22,24 @@ public class ProductInsert extends HttpServlet {
 		productDao = new ProductDao();
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		
 		try {
-			insertProducts(request, response);
-		} catch (SQLException | IOException e) {
+			
+			int category_id = Integer.parseInt(request.getParameter("category_id"));
+			String title = request.getParameter("title");
+			int quantity = Integer.parseInt(request.getParameter("quantity"));
+			String description = request.getParameter("description");
+			boolean highlight = Boolean.parseBoolean(request.getParameter("highlight"));
+			Double price = Double.parseDouble(request.getParameter("price"));
+			String image = (String) request.getParameter("image");
+
+			productDao.insertProduct(new Product(category_id, title, quantity, description, highlight, price, image));
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-
-	private void insertProducts(HttpServletRequest request, HttpServletResponse response)
-			throws SQLException, IOException {
-
-		int category_id = Integer.parseInt(request.getParameter("category_id"));
-		String title = request.getParameter("title");
-		int quantity = Integer.parseInt(request.getParameter("quantity"));
-		String description = request.getParameter("description");
-		boolean highlight = Boolean.parseBoolean(request.getParameter("highlight"));
-		Double price = Double.parseDouble(request.getParameter("price"));
-		String image = (String) request.getParameter("image");
-
-		productDao.insertProduct(new Product(category_id, title, quantity, description, highlight, price, image));
 	}
 
 }

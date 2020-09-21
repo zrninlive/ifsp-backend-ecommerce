@@ -21,18 +21,23 @@ public class CustomerLogin extends HttpServlet {
 		customerDao = new CustomerDao();
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 
-		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Methods", "*");
+		response.setHeader("Access-Control-Allow-Headers", "*");
+
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		
+
 		try {
 
 			String email = request.getParameter("email");
 			String password = request.getParameter("password");
 
+			System.out.println(password);
 			String encode_password = Base64.getEncoder().encodeToString(password.getBytes());
 
 			String customer = customerDao.findCustomerByEmail(email, encode_password);

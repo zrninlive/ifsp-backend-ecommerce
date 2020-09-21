@@ -21,21 +21,17 @@ public class UserList extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+
 		try {
-			listUsers(request, response);
+			String users = userDao.findUsers();
+
+			response.setHeader("Content-Type", "application/json; charset=UTF-8");
+			response.getWriter().print(users);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	private void listUsers(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
-		String users = userDao.findUsers();
-
-		response.setHeader("Content-Type", "application/json; charset=UTF-8");	
-		response.getWriter().print(users);
-
 	}
 
 }

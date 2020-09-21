@@ -1,7 +1,6 @@
 package project.ecommerce.web.customers;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Base64;
 
 import javax.servlet.ServletException;
@@ -25,17 +24,7 @@ public class CustomerUpdate extends HttpServlet {
 
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		try {
-			updateCustomer(request, response);
-		} catch (SQLException | IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void updateCustomer(HttpServletRequest request, HttpServletResponse response)
-			throws SQLException, IOException {
-
-		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Origin", "*");
 
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");

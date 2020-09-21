@@ -15,7 +15,7 @@ import project.ecommerce.model.Product;
 @WebServlet(name = "/ProductUpdate", urlPatterns = "/products/update")
 public class ProductUpdate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	private ProductDao productDao;
 
 	public void init() {
@@ -24,25 +24,23 @@ public class ProductUpdate extends HttpServlet {
 
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		
 		try {
-			updateProducts(request, response);
-		} catch (SQLException | IOException e) {
+
+			int id = Integer.parseInt(request.getParameter("id"));
+			String title = request.getParameter("title");
+			int quantity = Integer.parseInt(request.getParameter("quantity"));
+			String description = request.getParameter("description");
+			boolean highlight = Boolean.parseBoolean(request.getParameter("highlight"));
+			Double price = Double.parseDouble(request.getParameter("price"));
+			String image = (String) request.getParameter("image");
+
+			productDao.updateProduct(new Product(id, title, quantity, description, highlight, price, image));
+
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void updateProducts(HttpServletRequest request, HttpServletResponse response)
-			throws SQLException, IOException {
-
-		int id = Integer.parseInt(request.getParameter("id"));
-		String title = request.getParameter("title");
-		int quantity = Integer.parseInt(request.getParameter("quantity"));
-		String description = request.getParameter("description");
-		boolean highlight = Boolean.parseBoolean(request.getParameter("highlight"));
-		Double price = Double.parseDouble(request.getParameter("price"));
-		String image = (String) request.getParameter("image");
-
-		productDao.updateProduct(new Product(id, title, quantity, description, highlight, price, image));
-	}
 }

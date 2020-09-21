@@ -22,20 +22,15 @@ public class CategoryInsert extends HttpServlet {
 		categoryDao = new CategoryDao();
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		response.setHeader("Access-Control-Allow-Origin", "*");
 
 		try {
-			insertCategory(request, response);
-		} catch (SQLException | IOException e) {
+			String name = request.getParameter("name");
+			categoryDao.insertCategory(new Category(name));
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-
-	private void insertCategory(HttpServletRequest request, HttpServletResponse response)
-			throws SQLException, IOException {
-
-		String name = request.getParameter("name");
-		categoryDao.insertCategory(new Category(name));
 	}
 }

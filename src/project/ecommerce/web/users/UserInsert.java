@@ -22,21 +22,14 @@ public class UserInsert extends HttpServlet {
 
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		try {
-			insertUsers(request, response);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+		response.setHeader("Access-Control-Allow-Origin", "*");
 
-	private void insertUsers(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 
 		String encode_password = Base64.getEncoder().encodeToString(password.getBytes());
-		
+
 		userDao.insertUser(new User(name, email, encode_password));
 	}
 

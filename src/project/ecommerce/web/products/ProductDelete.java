@@ -23,18 +23,16 @@ public class ProductDelete extends HttpServlet {
 
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		response.setHeader("Access-Control-Allow-Origin", "*");
 
 		try {
-			deleteProduct(request, response);
-		} catch (SQLException | IOException e) {
+			
+			int id = Integer.parseInt(request.getParameter("id"));
+			productDao.deleteProduct(id);
+			
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void deleteProduct(HttpServletRequest request, HttpServletResponse response)
-			throws SQLException, IOException {
-		int id = Integer.parseInt(request.getParameter("id"));
-		productDao.deleteProduct(id);
-		System.out.println("Produto deletado com sucesso");
-	}
 }
