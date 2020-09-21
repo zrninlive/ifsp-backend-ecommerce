@@ -40,17 +40,9 @@ public class CustomerInsert extends HttpServlet {
 
 		String encode_password = Base64.getEncoder().encodeToString(password.getBytes());
 
-		try {
-			if (customerDao.findCustomer(cpf) != "") {
+		customerDao.insertCustomer(
+				new Customer(name, email, encode_password, cpf, phone, zipcode, street, number, city, state));
 
-				customerDao.insertCustomer(
-						new Customer(name, email, encode_password, cpf, phone, zipcode, street, number, city, state));
-
-			}
-		} catch (Exception e) {
-			System.out.println("CUSTOMER ALREADY EXISTS");
-			e.printStackTrace();
-		}
 	}
 
 }

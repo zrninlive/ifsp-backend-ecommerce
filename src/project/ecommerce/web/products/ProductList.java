@@ -29,7 +29,8 @@ public class ProductList extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setHeader("Access-Control-Allow-Origin", "*");
-		
+		response.setHeader("Content-Type", "application/json; charset=UTF-8");
+
 		try {
 			// list all products
 			List<Product> products = new ArrayList<>();
@@ -49,7 +50,6 @@ public class ProductList extends HttpServlet {
 			}
 			String productsJson = new Gson().toJson(products);
 
-			response.setHeader("Content-Type", "application/json; charset=UTF-8");
 			response.getWriter().print(productsJson);
 			
 		} catch (IOException e) {

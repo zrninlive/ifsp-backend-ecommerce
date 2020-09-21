@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class JDBCUtils {
-	private static final String jdbcURL = "jdbc:mysql://localhost:3306/db_ecommerce_sql?useTimezone=true&serverTimezone=UTC";
+	private static final String jdbcURL = "jdbc:mysql://localhost:3307/db_ecommerce_sql?useTimezone=true&serverTimezone=UTC";
 	private static final String jdbcUsername = "root";
-	private static final String jdbcPassword = "";
+	private static final String jdbcPassword = "root";
 
 	public static Connection getConnection() {
 		Connection connection = null;

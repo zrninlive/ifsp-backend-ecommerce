@@ -35,38 +35,19 @@ public class OrderInsert extends HttpServlet {
 		customerDao = new CustomerDao();
 	}
 
-	@Override
-	protected void doOptions(HttpServletRequest request, HttpServletResponse response)
-			throws IOException, ServletException {
-		request.setCharacterEncoding("UTF-8");
-
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		response.setHeader("Access-Control-Allow-Methods", "*");
-		response.setHeader("Access-Control-Allow-Headers", "*");
-
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-	}
-
-	protected void service(HttpServletRequest request, HttpServletResponse response)
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 
-		request.setCharacterEncoding("UTF-8");
-
 		response.setHeader("Access-Control-Allow-Origin", "*");
-		response.setHeader("Access-Control-Allow-Methods", "*");
-		response.setHeader("Access-Control-Allow-Headers", "*");
-
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
+		response.setHeader("Content-Type", "application/json; charset=UTF-8");
 
 		Gson gson = new Gson();
 		Order order = new Order();
 
 		String customer_cpf = request.getParameter("customer_cpf");
-		
+
 		System.out.println(customer_cpf);
-		
+
 		int total_products = Integer.parseInt(request.getParameter("total_products"));
 		List<Product> orderProducts = new ArrayList<>();
 		Double total = 0.0;
@@ -77,8 +58,8 @@ public class OrderInsert extends HttpServlet {
 			Customer customer = gson.fromJson(customer_json, Customer.class);
 
 			for (int i = 0; i < total_products; i++) {
-				int product_id = Integer.parseInt(request.getParameter("products[" + i + "][id]"));
-				int order_quantity = Integer.parseInt(request.getParameter("products[" + i + "][quantity]"));
+				int product_id = Integer.parseInt(request.getParameter("products-" + i + "-id"));
+				int order_quantity = Integer.parseInt(request.getParameter("products-" + i + "-quantity"));
 
 				Product order_product = productDao.selectProductById(product_id);
 
