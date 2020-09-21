@@ -22,15 +22,16 @@ public class CustomerInsert extends HttpServlet {
 		customerDao = new CustomerDao();
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void service(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		response.setHeader("Access-Control-Allow-Origin", "*");
+		request.setCharacterEncoding("UTF-8");
 
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		String cpf = request.getParameter("cpf");
 		String phone = request.getParameter("phone");
-
 		String zipcode = request.getParameter("zipcode");
 		String street = request.getParameter("street");
 		String number = request.getParameter("number");
@@ -39,8 +40,17 @@ public class CustomerInsert extends HttpServlet {
 
 		String encode_password = Base64.getEncoder().encodeToString(password.getBytes());
 
-		customerDao.insertCustomer(
-				new Customer(name, email, encode_password, cpf, phone, zipcode, street, number, city, state));
+		try {
+			if (customerDao.findCustomer(cpf) != "") {
+
+				customerDao.insertCustomer(
+						new Customer(name, email, encode_password, cpf, phone, zipcode, street, number, city, state));
+
+			}
+		} catch (Exception e) {
+			System.out.println("CUSTOMER ALREADY EXISTS");
+			e.printStackTrace();
+		}
 	}
 
 }

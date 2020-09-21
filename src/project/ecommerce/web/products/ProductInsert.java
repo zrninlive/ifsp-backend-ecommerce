@@ -25,6 +25,7 @@ public class ProductInsert extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setHeader("Access-Control-Allow-Origin", "*");
+		request.setCharacterEncoding("UTF-8");
 		
 		try {
 			

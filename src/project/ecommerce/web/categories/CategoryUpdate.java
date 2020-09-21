@@ -25,6 +25,7 @@ public class CategoryUpdate extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setHeader("Access-Control-Allow-Origin", "*");
+		request.setCharacterEncoding("UTF-8");
 
 		try {
 			int id = Integer.parseInt(request.getParameter("id"));

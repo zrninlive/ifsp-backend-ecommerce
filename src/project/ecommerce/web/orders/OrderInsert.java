@@ -35,17 +35,38 @@ public class OrderInsert extends HttpServlet {
 		customerDao = new CustomerDao();
 	}
 
+	@Override
+	protected void doOptions(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
+		request.setCharacterEncoding("UTF-8");
+
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Methods", "*");
+		response.setHeader("Access-Control-Allow-Headers", "*");
+
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+	}
+
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 
+		request.setCharacterEncoding("UTF-8");
+
 		response.setHeader("Access-Control-Allow-Origin", "*");
-		response.setHeader("Content-Type", "application/json; charset=UTF-8");
+		response.setHeader("Access-Control-Allow-Methods", "*");
+		response.setHeader("Access-Control-Allow-Headers", "*");
+
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
 
 		Gson gson = new Gson();
 		Order order = new Order();
 
-		String customer_cpf = request.getParameter("customer[cpf]");
-
+		String customer_cpf = request.getParameter("customer_cpf");
+		
+		System.out.println(customer_cpf);
+		
 		int total_products = Integer.parseInt(request.getParameter("total_products"));
 		List<Product> orderProducts = new ArrayList<>();
 		Double total = 0.0;
@@ -114,9 +135,10 @@ public class OrderInsert extends HttpServlet {
 			response.getWriter().print(orderJson);
 
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 			response.setStatus(400);
 			response.getWriter().print(new Gson().toJson(e.getMessage()));
-			e.printStackTrace();
 		}
 	}
 

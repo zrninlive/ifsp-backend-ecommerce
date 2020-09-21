@@ -21,6 +21,19 @@ public class CustomerLogin extends HttpServlet {
 		customerDao = new CustomerDao();
 	}
 
+	@Override
+	protected void doOptions(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
+		request.setCharacterEncoding("UTF-8");
+
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Methods", "*");
+		response.setHeader("Access-Control-Allow-Headers", "*");
+
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+	}
+
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
